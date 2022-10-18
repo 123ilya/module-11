@@ -27,11 +27,12 @@ class TelegraphText
                 $this->slug = $value;
             }
         }
-        if ($name = 'published') {
-            $newPublishedArr = explode('-', $value);
-            $currentPublishedArr = explode('-', $this->published);
-            var_dump($newPublishedArr);
-            var_dump($currentPublishedArr);
+        if ($name == 'published') {
+            $newPublishedDate = str_replace('-', '', $value);
+            $currentPublishedDate = str_replace('-', '', $this->published);
+            if ($newPublishedDate >= $currentPublishedDate) {
+                $this->published = $value;
+            }
         }
     }
 
@@ -42,6 +43,9 @@ class TelegraphText
         }
         if ($name == 'slug') {
             return $this->slug;
+        }
+        if ($name == 'published') {
+            return $this->published;
         }
     }
 
@@ -82,5 +86,5 @@ class TelegraphText
 $post = new TelegraphText('ilya', 'test');
 $post->editText('skazka', 'kjhkjhkuhkjhkjhkjhkjhkjhkjhkjhkjhkjhkjhkjhkjhkjhkjhkjh');
 //$post->storeText();
-$post->published = '111-444-555';
-
+$post->published = '22-09-19';
+echo $post->published . PHP_EOL;
