@@ -56,7 +56,9 @@ class TelegraphText
             }
         }
         if ($name == 'text') {
-            $this->loadText();
+            $this->text = $value;
+            $this->storeText();
+            echo '111';
         }
     }
 
@@ -71,8 +73,8 @@ class TelegraphText
         if ($name == 'published') {
             return $this->published;
         }
-        if ($name=='text') {
-            return $this->storeText();
+        if ($name == 'text') {
+            return $this->loadText();
         }
     }
 
@@ -219,8 +221,7 @@ class FileStorage extends Storage // Метод серриализует и за
 }
 
 //--------------------------------------------------------------------------
-//$text = new TelegraphText('ilya', 'test');
-//$text->editText('testTitle', 'swlihsliuhfwleihfliwuhfwleiuhfliwuhfliwuhfwleihf');
-//$text->text;
-//echo $text->text;
-
+$test = new TelegraphText('ilya','test');
+//$test->editText('ilya','gjdfgjldigjldifjgldfgjldfgjldgj');
+//$test->text='rrr';
+echo $test->text;
