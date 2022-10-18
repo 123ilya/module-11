@@ -22,11 +22,11 @@ interface EventListenerInterface//Интерфейс для обработки �
 
 class TelegraphText
 {
-    public string $text; //Сам текст
-    public string $title; //Заголовок текста
-    public string $author; //Автор
-    public string $published; //Дата создания объекта
-    public string $slug; //Имя файла
+    private string $text; //Сам текст
+    private string $title; //Заголовок текста
+    private string $author; //Автор
+    private string $published; //Дата создания объекта
+    private string $slug; //Имя файла
 
     public function __construct($author, $slug)
     {
