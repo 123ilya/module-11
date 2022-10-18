@@ -164,9 +164,9 @@ abstract class View
 //3.Абстрактный класс User
 abstract class User
 {
-    public string $id, $name, $role;
+    protected string $id, $name, $role;
 
-    abstract public function getTextToEdit();//Выводит список текстов, доступных пользователю для редактирования
+    abstract protected function getTextToEdit();//Выводит список текстов, доступных пользователю для редактирования
 }
 
 class FileStorage extends Storage // Метод серриализует и записывает в файл, объект класса TelegraphText
