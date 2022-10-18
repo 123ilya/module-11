@@ -32,10 +32,51 @@ class TelegraphText
     {
         $this->author = $author;
         $this->slug = $slug;
-        $this->published = date('Y-m-d H:i:s');
+        $this->published = date('Y-m-d');
     }
 
-    public function storeText(): void // На основе полей объекта формирует массив, серриализует его, а затем
+// 'Волшебный сеттер' для полей 'author', 'slug', 'published'.
+    public function __set($name, $value)
+    {
+        if ($name == 'author') {
+            if (strlen($value) <= 120) {
+                $this->author = $value; //Значение устанавливается только, если его длинна не превышает 120 символов
+            }
+        }
+        if ($name == 'slug') {
+            if (preg_match('[\w]', $value)) {
+                $this->slug = $value;//Значение устанавливается, только если символы его составляющие это буквы, цыфры либо "_"
+            }
+        }
+        if ($name == 'published') {
+            $newPublishedDate = str_replace('-', '', $value);
+            $currentPublishedDate = str_replace('-', '', $this->published);
+            if ($newPublishedDate >= $currentPublishedDate) {
+                $this->published = $value;//Значение устанавливается, только если дата равна либо позже текущей даты.
+            }
+        }
+        if ($name == 'text') {
+            $this->loadText();
+        }
+    }
+
+    public function __get($name)
+    {
+        if ($name == 'author') {
+            return $this->author;
+        }
+        if ($name == 'slug') {
+            return $this->slug;
+        }
+        if ($name == 'published') {
+            return $this->published;
+        }
+        if ($name=='text') {
+            return $this->storeText();
+        }
+    }
+
+    private function storeText(): void // На основе полей объекта формирует массив, серриализует его, а затем
         //записывает в файл.
     {
         $post = [
@@ -48,7 +89,8 @@ class TelegraphText
         file_put_contents($this->slug, $serializedPost);
     }
 
-    public function loadText() //Выгружает содержимое из файла. И на основе выгруженного массива обновляет поля объекта.
+    private function loadText(
+    ) //Выгружает содержимое из файла. И на основе выгруженного массива обновляет поля объекта.
     {
         $loadedPost = unserialize(file_get_contents($this->slug));
         if (filesize($this->slug) !== 0) {
@@ -112,10 +154,6 @@ abstract class View
 {
     public object $storage;
 
-//    public function _construct($object)
-//    {
-//        $this->storage = $object;//Присваивает полю $storage значение объекта, созданного подклассом Storage
-//    }
 
     abstract public function displayTextById($id);//Выводит текст по id
 
@@ -183,6 +221,6 @@ class FileStorage extends Storage // Метод серриализует и за
 //--------------------------------------------------------------------------
 //$text = new TelegraphText('ilya', 'test');
 //$text->editText('testTitle', 'swlihsliuhfwleihfliwuhfwleiuhfliwuhfliwuhfwleihf');
-//
-//$testStore = new FileStorage();
-//$testStore->create($text);
+//$text->text;
+//echo $text->text;
+
